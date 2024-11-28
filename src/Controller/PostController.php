@@ -10,8 +10,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Repository\CategoryRepository;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException; 
-
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[Route('/article')]
 class PostController extends AbstractController
@@ -26,20 +27,39 @@ class PostController extends AbstractController
     }
 
     #[Route('/new', name: 'post_new')]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $post = new Post();
         $form = $this->createForm(PostType::class, $post);
-
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var UploadedFile $file */
+            $file = $form->get('picture')->getData();
+
+            if ($file) {
+                // Si un fichier est téléchargé, gérer le fichier
+                $newFilename = uniqid() . '.' . $file->guessExtension();  // Générer un nom unique
+
+                // Déplacer le fichier
+                $file->move(
+                    $this->getParameter('uploads_directory'),  // Assure-toi d'avoir configuré ce paramètre
+                    $newFilename
+                );
+
+                // Assigner le nom du fichier à l'entité
+                $post->setPicture($newFilename);
+            } else {
+                // Si aucun fichier n'est téléchargé, ne rien changer, picture restera à null
+                $post->setPicture(null);
+            }
             $entityManager->persist($post);
             $entityManager->flush();
-
-            return $this->redirectToRoute('post_list');
+            return $this->redirectToRoute('post_show', ['id' => $post->getId()]);
         }
 
         return $this->render('article/new.html.twig', [
+            'post' => $post,
             'form' => $form->createView(),
         ]);
     }
@@ -88,10 +108,24 @@ class PostController extends AbstractController
     }
 
     #[Route('/{id}', name: 'post_show')]
-    public function show(Post $post): Response
+    public function show(Post $post, Request $request, EntityManagerInterface $entityManager): Response
     {
-        return $this->render('article/show.html.twig', [
+        $comment = new Comment();
+        $form = $this->createForm(CommentType::class, $comment);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $comment->setPost($post);
+            $comment->setCreatedAt(new \DateTime());
+            $entityManager->persist($comment);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('post_show', ['id' => $post->getId()]);
+        }
+
+        return $this->render('post/show.html.twig', [
             'post' => $post,
+            'form' => $form->createView(),
         ]);
     }
 
@@ -106,5 +140,5 @@ class PostController extends AbstractController
         ]);
     }
 
-    
+
 }

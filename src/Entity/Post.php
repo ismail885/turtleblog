@@ -25,7 +25,7 @@ class Post
     #[ORM\Column]
     private ?\DateTimeImmutable $publishedAt = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
     private ?string $picture = null;
 
 
@@ -94,7 +94,7 @@ class Post
         return $this->picture;
     }
 
-    public function setPicture(string $picture): static
+    public function setPicture(string $picture): self
     {
         $this->picture = $picture;
 

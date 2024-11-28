@@ -1,0 +1,39 @@
+
+body {
+    background-color: #e0f7fa;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+}
+h1 {
+    color: #00695c;
+}
+.btn-primary {
+    background-color: #00796b;
+    border-color: #00796b;
+}
+.btn-primary:hover {
+    background-color: #004d40;
+    border-color: #004d40;
+}
+.btn-secondary {
+    background-color: #004d40;
+    border-color: #004d40;
+}
+.btn-secondary:hover {
+    background-color: #00251a;
+    border-color: #00251a;
+}
+.card {
+    border: 2px solid #004d40;
+}
+.card-title {
+    color: #004d40;
+}
+.card-footer {
+    background-color: #e0f2f1;
+}
+.text-muted a {
+    color: #004d40;
+}
+.text-muted a:hover {
+    color: #00251a;
+}

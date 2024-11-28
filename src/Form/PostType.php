@@ -26,22 +26,9 @@ class PostType extends AbstractType
                 'label' => 'Description',
             ])
             ->add('picture', FileType::class, [
-                'label' => 'Image de couverture',
-                'required' => false,
-                'mapped' => false, // Si l'image n'est pas directement mappée à l'entité
-                'constraints' => [
-                    new Assert\File([
-                        'maxSize' => '2M',
-                        'mimeTypes' => [
-                            'image/jpeg',
-                            'image/png',
-                        ],
-                        'mimeTypesMessage' => 'Veuillez uploader une image valide (JPG ou JPEG ou PNG).',
-                    ]),
-                ],
-                'attr' => [
-                    'class' => 'form-control',
-                ],
+                'label' => 'Image de la publication',
+                'required' => false, 
+                'data_class' => null, 
             ])
             ->add('category', EntityType::class, [
                 'class' => Category::class,
