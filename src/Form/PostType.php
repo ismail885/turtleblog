@@ -36,7 +36,7 @@ class PostType extends AbstractType
                             'image/jpeg',
                             'image/png',
                         ],
-                        'mimeTypesMessage' => 'Veuillez uploader une image valide (JPEG ou PNG).',
+                        'mimeTypesMessage' => 'Veuillez uploader une image valide (JPG ou JPEG ou PNG).',
                     ]),
                 ],
                 'attr' => [

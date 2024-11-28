@@ -2,7 +2,9 @@
 
 {% block body %}
 <div class="container mt-5">
-    <img src="{{ asset(post.picture) }}" alt="{{ post.title }}" class="img-fluid mb-4">
+    {% if post.picture %}
+    <img src="{{ asset('uploads/images/' ~ post.picture) }}" alt="{{ post.title }}">
+    {% endif %}
     <h1 class="h3 mb-4 text-center">{{ post.title }}</h1>
     <p>{{ post.content }}</p>
     <p class="text-muted">{{ post.description }}</p>
