@@ -104,7 +104,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return array_unique($this->roles);
     }
     
-    
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
@@ -170,7 +169,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->updatedAt = $updatedAt;
 
         return $this;
-;
     }
 
     public function eraseCredentials(): void

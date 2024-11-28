@@ -108,27 +108,13 @@ class PostController extends AbstractController
     }
 
     #[Route('/{id}', name: 'post_show')]
-    public function show(Post $post, Request $request, EntityManagerInterface $entityManager): Response
+    public function show(Post $post): Response
     {
-        $comment = new Comment();
-        $form = $this->createForm(CommentType::class, $comment);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $comment->setPost($post);
-            $comment->setCreatedAt(new \DateTime());
-            $entityManager->persist($comment);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('post_show', ['id' => $post->getId()]);
-        }
-
-        return $this->render('post/show.html.twig', [
+        return $this->render('article/show.html.twig', [
             'post' => $post,
-            'form' => $form->createView(),
         ]);
     }
-
+    
     public function index(PostRepository $postRepository, CategoryRepository $categoryRepository): Response
     {
         $posts = $postRepository->findAll(); // Récupère tous les articles
