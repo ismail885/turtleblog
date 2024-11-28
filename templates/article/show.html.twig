@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="container mt-5">
+    <img src="{{ asset(post.picture) }}" alt="{{ post.title }}" class="img-fluid mb-4">
+    <h1 class="h3 mb-4 text-center">{{ post.title }}</h1>
+    <p>{{ post.content }}</p>
+    <p class="text-muted">{{ post.description }}</p>
+    <p class="text-muted">Catégorie: {{ post.category.name }}</p>
+    <p class="text-muted">Publié le: {{ post.publishedAt|date('d/m/Y') }}</p>
+</div>
+{% endblock %}
