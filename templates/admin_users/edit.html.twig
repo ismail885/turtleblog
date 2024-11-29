@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier un utilisateur{% endblock %}
+
+{% block body %}
+    <h1 class="my-4">Modifier l'utilisateur</h1>
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    {{ form_start(form) }}
+        <div class="mb-3">
+            {{ form_label(form.email, 'Adresse email', { 'label_attr': {'class': 'form-label'} }) }}
+            {{ form_widget(form.email, { 'attr': {'class': 'form-control'} }) }}
+            {{ form_errors(form.email) }}
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.roles, 'Rôles', { 'label_attr': {'class': 'form-label'} }) }}
+            {{ form_widget(form.roles, { 'attr': {'class': 'form-control'} }) }}
+            {{ form_errors(form.roles) }}
+        </div>
+
+        <button class="btn btn-success">Enregistrer</button>
+        <a href="{{ path('admin_users') }}" class="btn btn-secondary">Annuler</a>
+    {{ form_end(form) }}
+{% endblock %}
