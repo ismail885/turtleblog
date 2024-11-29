@@ -1,3 +1,4 @@
+
 {% extends 'base.html.twig' %}
 
 {% block body %}
@@ -13,4 +14,16 @@
     <p class="text-muted">Catégorie: {{ post.category.name }}</p>
     <p class="text-muted">Publié le: {{ post.publishedAt|date('d/m/Y') }}</p>
 </div>
+
+<h2>Commentaires</h2>
+<ul>
+    {% for comment in comments %}
+        <li>
+            <strong>{{ comment.createdAt|date('d/m/Y H:i') }} :</strong>
+            {{ comment.content }} ({{ comment.status }})
+        </li>
+    {% else %}
+        <li>Aucun commentaire pour cet article.</li>
+    {% endfor %}
+</ul>
 {% endblock %}

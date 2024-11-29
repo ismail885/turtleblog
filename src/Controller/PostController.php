@@ -112,14 +112,15 @@ class PostController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'post_show')]
+    #[Route('/{id}', name: 'post_show', methods: ['GET', 'POST'])]
     public function show(Post $post): Response
     {
         return $this->render('article/show.html.twig', [
             'post' => $post,
+            'comments' => $post->getComments(),
         ]);
     }
-    
+
     public function index(PostRepository $postRepository, CategoryRepository $categoryRepository): Response
     {
         $posts = $postRepository->findAll(); // Récupère tous les articles
@@ -130,6 +131,6 @@ class PostController extends AbstractController
             'categories' => $categories,
         ]);
     }
-
+    
 
 }
