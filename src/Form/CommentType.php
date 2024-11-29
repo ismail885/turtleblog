@@ -14,15 +14,15 @@ class CommentType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('content')
-            ->add('createdAt', null, [
-                'widget' => 'single_text',
-            ])
-            ->add('status')
-            ->add('post', EntityType::class, [
-                'class' => Post::class,
-                'choice_label' => 'id',
-            ])
+        ->add('content', TextareaType::class, [
+            'label' => 'Votre commentaire',
+            'attr' => ['rows' => 4],
+        ])
+        ->add('status', TextType::class, [
+            'label' => 'Statut',
+            'required' => false,
+        ])
+        ->add('save', SubmitType::class, ['label' => 'Envoyer le commentaire']);
         ;
     }
 
