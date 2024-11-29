@@ -33,14 +33,18 @@
                     </li>
                     
                     {% if app.user %}
+                        {% if app.user and 'ROLE_ADMIN' in app.user.roles %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="http://127.0.0.1:8000/user/admin">Gestion utilisateur</a>
+                            </li>
+                        {% endif %}
+
                         <!-- Si l'utilisateur est connecté -->
                        
                         <li class="nav-item">
                             <a class="nav-link" href="http://127.0.0.1:8000/logout">Se déconnecter</a>
                         </li>
 
-                        
-                        
                     {% else %}
                         <!-- Si l'utilisateur n'est pas connecté -->
                         <li class="nav-item">
