@@ -4,24 +4,33 @@
 {% block body %}
 <div class="container mt-5">
     <h1 class="h3 mb-4 text-center">Liste des articles</h1>
-    <div class="d-flex justify-content-center mb-4">
-        <a href="{{ path('post_new') }}" class="btn btn-primary">Créer un nouvel article</a>
-    </div>
+    {% if app.user and 'ROLE_ADMIN' in app.user.roles %}
+        <div class="d-flex justify-content-center mb-4">
+            <a href="{{ path('post_new') }}" class="btn btn-primary">Créer un nouvel article</a>
+        </div>
+    {% endif %}
 
     <div class="row">
         {% for post in posts %}
             <div class="col-md-4 mb-4">
                 <div class="card shadow-sm">
                     <div class="card-body">
+                        {% if post.picture %}
+                            <img src="{{ asset('uploads/pictures/' ~ post.picture) }}" class="card-img-top" alt="Image de {{ post.title }}" style="width: 100%; height: auto; object-fit: cover;">
+                        {% else %}
+                            <img src="{{ asset('uploads/pictures/default.png') }}" class="card-img-top" alt="Image par défaut" style="width: 100%; height: auto; object-fit: cover;">
+                        {% endif %}
                         <h5 class="card-title">{{ post.title }}</h5>
                         <p class="card-text">{{ post.content[:50] ~ '...' }}</p>
                         <p class="text-muted">Catégorie: {{ post.category.name }}</p>
                         <p class="text-muted">Publié le: {{ post.publishedAt|date('d/m/Y') }}</p>
                         <a href="{{ path('post_show', {'id': post.id}) }}" class="btn btn-primary">Lire la suite</a>
-                        <form method="post" action="{{ path('post_delete', {id: post.id}) }}" onsubmit="return confirm('Êtes-vous sûr ?');" class="d-inline">
-                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ post.id) }}">
-                            <button class="btn btn-danger">Supprimer</button>
-                        </form>
+                        {% if app.user and 'ROLE_ADMIN' in app.user.roles %}
+                            <form method="post" action="{{ path('post_delete', {id: post.id}) }}" onsubmit="return confirm('Êtes-vous sûr ?');" class="d-inline">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ post.id) }}">
+                                <button class="btn btn-danger">Supprimer</button>
+                            </form>
+                        {% endif %}
                     </div>
                 </div>
             </div>
